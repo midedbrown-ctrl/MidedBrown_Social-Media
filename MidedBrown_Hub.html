@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MidedBrown Data Plug | Official Channels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Inter:wght@400;600;800&display=swap');
+        
+        body {
+            background: #020617;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .tech-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* --- WELCOME SCREEN STYLES --- */
+        #welcome-screen {
+            position: fixed;
+            inset: 0;
+            background: #020617;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        #welcome-screen.hidden-screen {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Spinning Gradient Border */
+        .logo-spinner-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            padding: 5px; 
+        }
+
+        .logo-spinner-container::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: conic-gradient(
+                #00d2ff, 
+                #3b82f6, 
+                #8b5cf6, 
+                #00d2ff
+            );
+            animation: spin 3s linear infinite;
+        }
+
+        .logo-inner-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 50%;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .enter-btn {
+            margin-top: 2rem;
+            background: linear-gradient(90deg, #00d2ff, #3b82f6);
+            color: #020617;
+            padding: 12px 32px;
+            border-radius: 9999px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* --- MAIN INTERFACE STYLES --- */
+        .brand-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .brand-part-1 { animation: slidePart1 7s infinite; }
+        .brand-part-2 { animation: slidePart2 7s infinite; }
+        .verified-badge-main { animation: fadeInOut 7s infinite; }
+
+        @keyframes slidePart1 {
+            0%, 85% { transform: translateX(0); opacity: 1; }
+            90% { transform: translateX(-150%); opacity: 0; }
+            95% { transform: translateX(150%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slidePart2 {
+            0%, 85% { transform: translateX(0); opacity: 1; }
+            90% { transform: translateX(150%); opacity: 0; }
+            95% { transform: translateX(-150%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeInOut {
+            0%, 85% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #22d3ee 0%, #fff 50%, #22d3ee 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            font-weight: 900;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .section-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header::before, .section-header::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.5), transparent);
+        }
+
+        .section-header span {
+            padding: 0 15px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3em;
+            color: #22d3ee;
+            text-transform: uppercase;
+        }
+
+        .data-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .active-link:hover {
+            border-color: #00d2ff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .shop-glow {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(59, 130, 246, 0.25) 100%);
+            border: 2px solid #00d2ff;
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 5px rgba(0, 210, 255, 0.4); }
+            to { box-shadow: 0 0 20px rgba(0, 210, 255, 0.7); }
+        }
+
+        .logo-blend {
+            mix-blend-mode: multiply;
+            filter: contrast(1.1) brightness(1.05);
+        }
+
+        .verified-badge {
+            width: 14px;
+            height: 14px;
+            color: #00aaff;
+            flex-shrink: 0;
+        }
+
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #00d2ff;
+            color: #020617;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 10000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+        }
+
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+    </style>
+</head>
+<body class="flex flex-col items-center p-6" onload="initPage()">
+
+    <!-- 1. WELCOME SCREEN -->
+    <div id="welcome-screen">
+        <div class="logo-spinner-container mb-8 shadow-[0_0_40px_rgba(0,210,255,0.4)]">
+            <div class="logo-inner-circle">
+                <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GB-GH-4.jpg" 
+                     alt="MidedBrown Logo" 
+                     class="w-full h-full object-cover logo-blend">
+            </div>
+        </div>
+
+        <h1 id="welcome-greeting" class="text-2xl font-black tech-font text-cyan-400 mb-2 uppercase">Good Afternoon</h1>
+        <p class="text-white/70 max-w-xs mb-8 text-sm leading-relaxed">
+            You're welcome to <span class="text-white font-bold">MidedBrown Data Plug</span> official channels. 
+        </p>
+
+        <button class="enter-btn tech-font" onclick="enterSite()">Enter Official Channels</button>
+    </div>
+
+    <!-- 2. MAIN INTERFACE -->
+    <div id="toast">LINK COMING SOON...</div>
+
+    <header class="mt-12 mb-10 text-center flex flex-col items-center">
+        <!-- Main Logo -->
+        <div class="logo-spinner-container mb-6 shadow-[0_0_30px_rgba(0,210,255,0.3)]">
+            <div class="logo-inner-circle">
+                <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GB-GH-4.jpg" 
+                     alt="MidedBrown Logo" 
+                     class="w-full h-full object-cover logo-blend">
+            </div>
+        </div>
+        
+        <div class="brand-container text-2xl font-extrabold tracking-tight text-white uppercase tech-font">
+            <span class="brand-part-1">MidedBrown</span>
+            <span class="brand-part-2">Data Plug</span>
+            <svg class="verified-badge-main w-6 h-6 text-[#00aaff]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/>
+            </svg>
+        </div>
+        
+        <p class="shimmer-text text-[10px] tracking-[0.4em] mt-2 uppercase opacity-90">INSTANT TOP-UP • RELIABLE DATA</p>
+    </header>
+
+    <main class="w-full max-w-sm space-y-6">
+
+        <!-- SHOP -->
+        <div class="relative group mb-10">
+            <div class="section-header"><span>Official Store</span></div>
+            <a href="https://shr.pn/MB_Data_plug" target="_blank" class="data-card active-link shop-glow flex items-center p-5">
+                <div class="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mr-4 text-cyan-400 border border-cyan-500/40">
+                    <i class="fas fa-shopping-cart text-2xl"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex items-center gap-2">
+                        <p class="text-[14px] text-white font-black tracking-widest uppercase tech-font">BUY DATA NOW</p>
+                        <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                    </div>
+                    <p class="text-[10px] text-cyan-300 font-bold uppercase mt-1">Direct Automatic System</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- SOCIAL CHANNELS -->
+        <div class="space-y-3">
+            <div class="section-header"><span>Official Channels</span></div>
+
+            <!-- TIKTOK -->
+            <a href="https://www.tiktok.com/@midedbrown_data_plug" target="_blank" class="data-card active-link flex items-center p-4 border-l-4 border-l-white">
+                <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mr-4 text-white">
+                    <i class="fab fa-tiktok text-lg"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">TikTok</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+            </a>
+
+            <!-- WHATSAPP -->
+            <a href="https://whatsapp.com/channel/0029Vb84FZb0lwgh0Cxs7R2g" target="_blank" class="data-card active-link flex items-center p-4 border-l-4 border-l-green-500">
+                <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mr-4 text-green-500">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">WhatsApp Channel</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+            </a>
+
+            <!-- INSTAGRAM -->
+            <a href="#" id="ig-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-pink-500 opacity-60">
+                <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center mr-4 text-pink-500">
+                    <i class="fab fa-instagram text-lg"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">Instagram</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+                <span id="ig-tag" class="text-[9px] text-pink-900 font-black bg-pink-400 px-2 py-0.5 rounded">PENDING</span>
+            </a>
+
+            <!-- X / TWITTER -->
+            <a href="#" id="x-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-slate-400 opacity-60">
+                <div class="w-10 h-10 rounded-lg bg-slate-500/10 flex items-center justify-center mr-4 text-white">
+                    <i class="fab fa-x-twitter text-lg"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">X (Twitter)</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+                <span id="x-tag" class="text-[9px] text-slate-900 font-black bg-slate-400 px-2 py-0.5 rounded">PENDING</span>
+            </a>
+
+            <!-- FACEBOOK -->
+            <a href="#" id="fb-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-blue-600 opacity-60">
+                <div class="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center mr-4 text-blue-500">
+                    <i class="fab fa-facebook-f text-lg"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">Facebook</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+                <span id="fb-tag" class="text-[9px] text-blue-900 font-black bg-blue-400 px-2 py-0.5 rounded">PENDING</span>
+            </a>
+
+            <!-- TELEGRAM -->
+            <a href="#" id="tg-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-sky-500 opacity-60">
+                <div class="w-10 h-10 rounded-lg bg-sky-500/10 flex items-center justify-center mr-4 text-sky-400">
+                    <i class="fab fa-telegram-plane text-lg"></i>
+                </div>
+                <div class="flex-grow flex items-center gap-2">
+                    <p class="font-bold text-white text-sm">Telegram</p>
+                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
+                </div>
+                <span id="tg-tag" class="text-[9px] text-sky-900 font-black bg-sky-400 px-2 py-0.5 rounded">PENDING</span>
+            </a>
+
+        </div>
+
+    </main>
+
+    <footer class="mt-20 mb-10 text-center">
+        <p class="text-[#38bdf8] font-black text-[12px] tech-font uppercase tracking-widest">
+            &copy; DESIGNED BY MIDEDBROWN
+        </p>
+    </footer>
+
+    <script>
+        function initPage() {
+            checkLinks();
+            updateGreeting();
+        }
+
+        function enterSite() {
+            const screen = document.getElementById('welcome-screen');
+            screen.classList.add('hidden-screen');
+        }
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "Good Day!";
+            if (hour < 12) greeting = "Good Morning!";
+            else if (hour < 18) greeting = "Good Afternoon!";
+            else greeting = "Good Evening!";
+            document.getElementById('welcome-greeting').innerText = greeting;
+        }
+
+        function checkLinks() {
+            const links = [
+                { id: 'ig-link', tag: 'ig-tag' },
+                { id: 'x-link', tag: 'x-tag' },
+                { id: 'fb-link', tag: 'fb-tag' },
+                { id: 'tg-link', tag: 'tg-tag' }
+            ];
+
+            links.forEach(item => {
+                const element = document.getElementById(item.id);
+                if (!element) return;
+                const tag = document.getElementById(item.tag);
+                if (element.getAttribute('href') !== "#") {
+                    if (tag) tag.style.display = 'none';
+                    element.classList.remove('opacity-60');
+                    element.classList.add('active-link');
+                }
+            });
+        }
+
+        function handlePending(e, el) {
+            if (el.getAttribute('href') === "#") {
+                e.preventDefault();
+                showToast();
+            }
+        }
+
+        function showToast() {
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+    </script>
+
+</body>
+</html>
+
