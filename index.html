@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MidedBrown Data Plug | Official Channels</title>
+    <title>MidedBrown Data Plug | Official Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Inter:wght@400;600;800&display=swap');
         
         body {
-            background: #020617;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            background: #010409;
             color: #f8fafc;
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -21,421 +18,430 @@
             overflow-x: hidden;
         }
 
-        .tech-font {
-            font-family: 'JetBrains Mono', monospace;
+        .tech-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* --- BACKGROUND ELEMENTS --- */
+        .stars-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #020617 0%, #000000 100%);
+            overflow: hidden;
         }
 
-        /* --- WELCOME SCREEN STYLES --- */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            box-shadow: 0 0 10px white;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: var(--opacity); transform: scale(1.5); }
+        }
+
+        /* Shooting Star Effect */
+        .shooting-star {
+            position: fixed;
+            height: 2px;
+            background: linear-gradient(90deg, #ffffff, transparent);
+            box-shadow: 0 0 20px #ffffff;
+            z-index: 50;
+            pointer-events: none;
+            border-radius: 999px;
+            filter: drop-shadow(0 0 10px #00d2ff);
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0) rotate(var(--angle)); width: 0; opacity: 1; }
+            100% { transform: translateX(var(--dist-x)) translateY(var(--dist-y)) rotate(var(--angle)); width: 150px; opacity: 0; }
+        }
+
+        /* Floating Icons Background */
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.04);
+            font-size: 2.5rem;
+            z-index: 1;
+            animation: floatAround 25s infinite linear;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(15vw, 15vh) rotate(90deg); }
+            50% { transform: translate(-10vw, 30vh) rotate(180deg); }
+            75% { transform: translate(-20vw, 10vh) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        /* Firecracker Effect */
+        .firecracker {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* --- WELCOME SCREEN --- */
         #welcome-screen {
             position: fixed;
             inset: 0;
-            background: #020617;
+            background: #000;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
-            padding: 2rem;
+            transition: opacity 0.8s;
             text-align: center;
+            padding: 20px;
+            overflow: hidden;
         }
 
-        #welcome-screen.hidden-screen {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* Spinning Gradient Border */
-        .logo-spinner-container {
+        .welcome-content {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             position: relative;
-            width: 150px;
-            height: 150px;
+            z-index: 10;
+        }
+
+        .welcome-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #00d2ff;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            line-height: 1.1;
+        }
+
+        .greeting-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: -10px;
+            letter-spacing: 0.05em;
+        }
+
+        .welcome-desc {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .logo-main-wrapper {
+            position: relative;
+            width: 240px; 
+            height: 240px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            overflow: hidden;
-            padding: 5px; 
+            margin: 20px 0;
         }
 
-        .logo-spinner-container::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: conic-gradient(
-                #00d2ff, 
-                #3b82f6, 
-                #8b5cf6, 
-                #00d2ff
-            );
-            animation: spin 3s linear infinite;
+        .logo-spinner-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 10px;
+            background: conic-gradient(#00d2ff, #3b82f6, #8b5cf6, #00d2ff);
+            animation: spin 6s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 70px rgba(0, 210, 255, 0.6);
         }
 
         .logo-inner-circle {
-            position: relative;
             width: 100%;
             height: 100%;
             background: white;
             border-radius: 50%;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
+            animation: spin 6s linear infinite reverse;
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        #welcome-screen.hidden-screen { opacity: 0; visibility: hidden; pointer-events: none; }
 
         .enter-btn {
-            margin-top: 2rem;
             background: linear-gradient(90deg, #00d2ff, #3b82f6);
-            color: #020617;
-            padding: 12px 32px;
+            color: #010409;
+            padding: 18px 56px;
             border-radius: 9999px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        /* --- MAIN INTERFACE STYLES --- */
-        .brand-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            overflow: hidden;
-        }
-
-        .brand-part-1 { animation: slidePart1 7s infinite; }
-        .brand-part-2 { animation: slidePart2 7s infinite; }
-        .verified-badge-main { animation: fadeInOut 7s infinite; }
-
-        @keyframes slidePart1 {
-            0%, 85% { transform: translateX(0); opacity: 1; }
-            90% { transform: translateX(-150%); opacity: 0; }
-            95% { transform: translateX(150%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slidePart2 {
-            0%, 85% { transform: translateX(0); opacity: 1; }
-            90% { transform: translateX(150%); opacity: 0; }
-            95% { transform: translateX(-150%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeInOut {
-            0%, 85% { opacity: 1; transform: scale(1); }
-            90% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .shimmer-text {
-            background: linear-gradient(90deg, #22d3ee 0%, #fff 50%, #22d3ee 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s linear infinite;
-            font-weight: 900;
-        }
-
-        @keyframes shimmer {
-            to { background-position: 200% center; }
-        }
-
-        .section-header {
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s;
             position: relative;
-            display: flex;
+            z-index: 11;
+        }
+
+        /* --- STATUS STYLES --- */
+        .verified-badge {
+            color: #3b82f6;
+            font-size: 13px;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-header::before, .section-header::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.5), transparent);
-        }
-
-        .section-header span {
-            padding: 0 15px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.3em;
-            color: #22d3ee;
-            text-transform: uppercase;
+            vertical-align: middle;
+            margin-left: 2px;
         }
 
         .data-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            transition: 0.3s;
+            cursor: pointer;
         }
 
-        .active-link:hover {
-            border-color: #00d2ff;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 20px rgba(0, 210, 255, 0.2);
+        /* Dimming Effect for Placeholder links */
+        .dimmed-card {
+            opacity: 0.45;
+            filter: grayscale(0.5);
+            cursor: default;
         }
-
-        .shop-glow {
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(59, 130, 246, 0.25) 100%);
-            border: 2px solid #00d2ff;
-            animation: pulse-glow 2s infinite alternate;
+        
+        .data-card:hover:not(.dimmed-card) {
+            border-color: rgba(0, 210, 255, 0.4);
+            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.85);
         }
+        
+        .highlight-blue { color: #00d2ff; text-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
 
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 5px rgba(0, 210, 255, 0.4); }
-            to { box-shadow: 0 0 20px rgba(0, 210, 255, 0.7); }
-        }
-
-        .logo-blend {
-            mix-blend-mode: multiply;
-            filter: contrast(1.1) brightness(1.05);
-        }
-
-        .verified-badge {
-            width: 14px;
-            height: 14px;
-            color: #00aaff;
-            flex-shrink: 0;
-        }
-
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #00d2ff;
-            color: #020617;
-            text-align: center;
-            border-radius: 8px;
-            padding: 12px;
-            position: fixed;
-            z-index: 10000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: bold;
-        }
-
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="flex flex-col items-center p-6" onload="initPage()">
 
+    <div class="stars-container" id="stars"></div>
+
     <!-- 1. WELCOME SCREEN -->
     <div id="welcome-screen">
-        <div class="logo-spinner-container mb-8 shadow-[0_0_40px_rgba(0,210,255,0.4)]">
-            <div class="logo-inner-circle">
-                <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GB-GH-4.jpg" 
-                     alt="MidedBrown Logo" 
-                     class="w-full h-full object-cover logo-blend">
+        <div id="welcome-icons-bg" class="absolute inset-0 pointer-events-none overflow-hidden z-[1]"></div>
+        
+        <div class="welcome-content">
+            <p id="time-greeting" class="greeting-text tech-font"></p>
+            <h1 class="welcome-title tech-font uppercase">Welcome to our<br>Shopping Portal</h1>
+            
+            <p class="welcome-desc">
+                Your number one hub for affordable and instant data bundles. 
+                Discover our range of packages designed to keep you connected 24/7.
+            </p>
+
+            <div class="logo-main-wrapper">
+                <div class="logo-spinner-container">
+                    <div class="logo-inner-circle">
+                        <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GB-GH-4.jpg" 
+                             alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
             </div>
+
+            <button class="enter-btn tech-font" onclick="enterSite()">Proceed to Portal</button>
         </div>
-
-        <h1 id="welcome-greeting" class="text-2xl font-black tech-font text-cyan-400 mb-2 uppercase">Good Afternoon</h1>
-        <p class="text-white/70 max-w-xs mb-8 text-sm leading-relaxed">
-            You're welcome to <span class="text-white font-bold">MidedBrown Data Plug</span> official channels. 
-        </p>
-
-        <button class="enter-btn tech-font" onclick="enterSite()">See More</button>
     </div>
 
-    <!-- 2. MAIN INTERFACE -->
-    <div id="toast">LINK COMING SOON...</div>
-
-    <header class="mt-12 mb-10 text-center flex flex-col items-center">
-        <!-- Main Logo -->
-        <div class="logo-spinner-container mb-6 shadow-[0_0_30px_rgba(0,210,255,0.3)]">
-            <div class="logo-inner-circle">
-                <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GB-GH-4.jpg" 
-                     alt="MidedBrown Logo" 
-                     class="w-full h-full object-cover logo-blend">
+    <!-- MAIN BRANDING -->
+    <header class="mt-14 mb-10 text-center flex flex-col items-center relative z-10">
+        <div class="logo-spinner-container w-32 h-32 mb-4" style="animation-duration: 10s;">
+            <div class="logo-inner-circle" style="animation-duration: 10s;">
+                <img src="https://i.ibb.co/FtsMMh0/PACKAGES-AMOUNT-1-GB-GH-6-2-GB-GH-11-3-GB-GH-17-4-GB-GH-22-5-GB-GH-26-50-6-1-10-GH-4.jpg" alt="Logo">
             </div>
         </div>
-        
-        <div class="brand-container text-2xl font-extrabold tracking-tight text-white uppercase tech-font">
-            <span class="brand-part-1">MidedBrown</span>
-            <span class="brand-part-2">Data Plug</span>
-            <svg class="verified-badge-main w-6 h-6 text-[#00aaff]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/>
-            </svg>
-        </div>
-        
-        <p class="shimmer-text text-[10px] tracking-[0.4em] mt-2 uppercase opacity-90">INSTANT TOP-UP • RELIABLE DATA</p>
+        <h2 class="text-3xl font-black tech-font text-white uppercase tracking-tighter">MIDEDBROWN DATA PLUG</h2>
+        <p class="text-[11px] highlight-blue font-bold tracking-[0.4em] mt-2 uppercase">Official Brand Portal</p>
     </header>
 
-    <main class="w-full max-w-sm space-y-6">
-
-        <!-- SHOP -->
-        <div class="relative group mb-10">
-            <div class="section-header"><span>Official Store</span></div>
-            <a href="https://shr.pn/MB_Data_plug" target="_blank" class="data-card active-link shop-glow flex items-center p-5">
-                <div class="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mr-4 text-cyan-400 border border-cyan-500/40">
-                    <i class="fas fa-shopping-cart text-2xl"></i>
+    <main class="w-full max-w-sm space-y-6 relative z-10">
+        <!-- MARKETPLACE -->
+        <div class="space-y-3">
+            <div class="flex items-center px-2">
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Marketplace</span>
+                <div class="flex-grow h-[1px] bg-slate-800 ml-4"></div>
+            </div>
+            <a href="https://shr.pn/MB_Data_plug" target="_blank" onclick="triggerBoost()" class="data-card flex items-center p-6 border-2 border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-500/10 transition-all">
+                <div class="w-12 h-12 rounded bg-cyan-500/20 flex items-center justify-center mr-4 text-cyan-400">
+                    <i class="fas fa-shopping-cart text-xl"></i>
                 </div>
                 <div class="flex-grow">
-                    <div class="flex items-center gap-2">
-                        <p class="text-[14px] text-white font-black tracking-widest uppercase tech-font">BUY DATA NOW</p>
-                        <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                    </div>
-                    <p class="text-[10px] text-cyan-300 font-bold uppercase mt-1">Direct Automatic System</p>
+                    <p class="text-[10px] highlight-blue font-black uppercase mb-1">Active Shop</p>
+                    <p class="font-black text-white tech-font text-lg uppercase leading-tight">Shop Data Bundles<i class="fas fa-check-circle verified-badge"></i></p>
                 </div>
+                <i class="fas fa-arrow-right text-cyan-500/50"></i>
             </a>
         </div>
 
-        <!-- SOCIAL CHANNELS -->
+        <!-- SOCIAL LINKS -->
         <div class="space-y-3">
-            <div class="section-header"><span>Official Channels</span></div>
+            <div class="flex items-center px-2">
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Connect With Us</span>
+                <div class="flex-grow h-[1px] bg-slate-800 ml-4"></div>
+            </div>
 
-            <!-- TIKTOK -->
-            <a href="https://www.tiktok.com/@midedbrown_data_plug" target="_blank" class="data-card active-link flex items-center p-4 border-l-4 border-l-white">
-                <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mr-4 text-white">
-                    <i class="fab fa-tiktok text-lg"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">TikTok</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
+            <!-- WhatsApp (Active) -->
+            <a href="https://whatsapp.com/channel/0029Vb84FZb0lwgh0Cxs7R2g" target="_blank" onclick="triggerBoost()" class="data-card flex items-center p-4">
+                <div class="w-10 h-10 rounded bg-green-500/10 flex items-center justify-center mr-4 text-green-500"><i class="fab fa-whatsapp text-lg"></i></div>
+                <p class="font-bold text-white text-sm">WhatsApp Channel<i class="fas fa-check-circle verified-badge"></i></p>
             </a>
 
-            <!-- WHATSAPP -->
-            <a href="https://whatsapp.com/channel/0029Vb84FZb0lwgh0Cxs7R2g" target="_blank" class="data-card active-link flex items-center p-4 border-l-4 border-l-green-500">
-                <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mr-4 text-green-500">
-                    <i class="fab fa-whatsapp text-xl"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">WhatsApp Channel</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
+            <!-- Telegram (Dimmed Placeholder) -->
+            <a href="{PASTE_YOUR_LINK_HERE}" target="_blank" class="data-card dimmed-card flex items-center p-4">
+                <div class="w-10 h-10 rounded bg-sky-500/10 flex items-center justify-center mr-4 text-sky-400"><i class="fab fa-telegram-plane text-lg"></i></div>
+                <p class="font-bold text-white text-sm">Telegram Group<i class="fas fa-check-circle verified-badge"></i></p>
             </a>
 
-            <!-- INSTAGRAM -->
-            <a href="#" id="ig-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-pink-500 opacity-60">
-                <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center mr-4 text-pink-500">
-                    <i class="fab fa-instagram text-lg"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">Instagram</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
-                <span id="ig-tag" class="text-[9px] text-pink-900 font-black bg-pink-400 px-2 py-0.5 rounded">PENDING</span>
+            <!-- TikTok (Active) -->
+            <a href="https://www.tiktok.com/@midedbrown_data_plug" target="_blank" onclick="triggerBoost()" class="data-card flex items-center p-4">
+                <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center mr-4 text-white"><i class="fab fa-tiktok text-lg"></i></div>
+                <p class="font-bold text-white text-sm">TikTok Official<i class="fas fa-check-circle verified-badge"></i></p>
             </a>
 
-            <!-- X / TWITTER -->
-            <a href="#" id="x-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-slate-400 opacity-60">
-                <div class="w-10 h-10 rounded-lg bg-slate-500/10 flex items-center justify-center mr-4 text-white">
-                    <i class="fab fa-x-twitter text-lg"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">X (Twitter)</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
-                <span id="x-tag" class="text-[9px] text-slate-900 font-black bg-slate-400 px-2 py-0.5 rounded">PENDING</span>
+            <!-- Facebook (Dimmed Placeholder) -->
+            <a href="{PASTE_YOUR_LINK_HERE}" target="_blank" class="data-card dimmed-card flex items-center p-4">
+                <div class="w-10 h-10 rounded bg-blue-600/10 flex items-center justify-center mr-4 text-blue-500"><i class="fab fa-facebook-f text-lg"></i></div>
+                <p class="font-bold text-white text-sm">Facebook Page<i class="fas fa-check-circle verified-badge"></i></p>
             </a>
 
-            <!-- FACEBOOK -->
-            <a href="https://www.facebook.com/MidedBrown" id="fb-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-blue-600 opacity-60">
-                <div class="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center mr-4 text-blue-500">
-                    <i class="fab fa-facebook-f text-lg"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">Facebook</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
-                <span id="fb-tag" class="text-[9px] text-blue-900 font-black bg-blue-400 px-2 py-0.5 rounded">PENDING</span>
+            <!-- Instagram (Dimmed Placeholder) -->
+            <a href="{PASTE_YOUR_LINK_HERE}" target="_blank" class="data-card dimmed-card flex items-center p-4">
+                <div class="w-10 h-10 rounded bg-pink-500/10 flex items-center justify-center mr-4 text-pink-500"><i class="fab fa-instagram text-lg"></i></div>
+                <p class="font-bold text-white text-sm">Instagram Official<i class="fas fa-check-circle verified-badge"></i></p>
             </a>
-
-            <!-- TELEGRAM -->
-            <a href="#" id="tg-link" onclick="handlePending(event, this)" class="data-card flex items-center p-4 border-l-4 border-l-sky-500 opacity-60">
-                <div class="w-10 h-10 rounded-lg bg-sky-500/10 flex items-center justify-center mr-4 text-sky-400">
-                    <i class="fab fa-telegram-plane text-lg"></i>
-                </div>
-                <div class="flex-grow flex items-center gap-2">
-                    <p class="font-bold text-white text-sm">Telegram</p>
-                    <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2L12 21.04l3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>
-                </div>
-                <span id="tg-tag" class="text-[9px] text-sky-900 font-black bg-sky-400 px-2 py-0.5 rounded">PENDING</span>
-            </a>
-
         </div>
-
     </main>
 
-    <footer class="mt-20 mb-10 text-center">
-        <p class="text-[#38bdf8] font-black text-[12px] tech-font uppercase tracking-widest">
-            &copy; DESIGNED BY MIDEDBROWN
+    <footer class="mt-16 mb-12 text-center relative z-10">
+        <p class="text-[10px] font-black tech-font uppercase tracking-widest highlight-blue bg-white/5 py-3 px-6 rounded-full border border-white/10">
+            &copy; 2026 MIDEDBROWN PLUG
         </p>
     </footer>
 
     <script>
-        function initPage() {
-            checkLinks();
-            updateGreeting();
-        }
-
-        function enterSite() {
-            const screen = document.getElementById('welcome-screen');
-            screen.classList.add('hidden-screen');
-        }
-
-        function updateGreeting() {
+        function setGreeting() {
             const hour = new Date().getHours();
-            let greeting = "Good Day!";
-            if (hour < 12) greeting = "Good Morning!";
-            else if (hour < 18) greeting = "Good Afternoon!";
-            else greeting = "Good Evening!";
-            document.getElementById('welcome-greeting').innerText = greeting;
+            let greeting = "Good Evening";
+            if (hour < 12) greeting = "Good Morning";
+            else if (hour < 18) greeting = "Good Afternoon";
+            document.getElementById('time-greeting').innerText = greeting + "!";
         }
 
-        function checkLinks() {
-            const links = [
-                { id: 'ig-link', tag: 'ig-tag' },
-                { id: 'x-link', tag: 'x-tag' },
-                { id: 'fb-link', tag: 'fb-tag' },
-                { id: 'tg-link', tag: 'tg-tag' }
-            ];
-
-            links.forEach(item => {
-                const element = document.getElementById(item.id);
-                if (!element) return;
-                const tag = document.getElementById(item.tag);
-                if (element.getAttribute('href') !== "#") {
-                    if (tag) tag.style.display = 'none';
-                    element.classList.remove('opacity-60');
-                    element.classList.add('active-link');
-                }
-            });
-        }
-
-        function handlePending(e, el) {
-            if (el.getAttribute('href') === "#") {
-                e.preventDefault();
-                showToast();
+        function createStars() {
+            const container = document.getElementById('stars');
+            const starCount = 130; 
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 3.5 + 1; 
+                const duration = Math.random() * 3 + 2;
+                const opacity = Math.random() * 0.6 + 0.4;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.setProperty('--opacity', opacity);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(star);
             }
         }
 
-        function showToast() {
-            var x = document.getElementById("toast");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        function triggerBoost() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createShootingStar, i * 100);
+            }
+        }
+
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * (window.innerHeight / 2);
+            const angle = 30 + Math.random() * 30;
+            const dist = 600 + Math.random() * 400;
+            const rad = angle * (Math.PI / 180);
+            const dx = Math.cos(rad) * dist;
+            const dy = Math.sin(rad) * dist;
+
+            star.style.left = startX + 'px';
+            star.style.top = startY + 'px';
+            star.style.setProperty('--angle', `${angle}deg`);
+            star.style.setProperty('--dist-x', `${dx}px`);
+            star.style.setProperty('--dist-y', `${dy}px`);
+            star.style.animation = `shoot ${Math.random() * 0.4 + 0.3}s linear forwards`;
+            
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 1000);
+        }
+
+        function createWelcomeIcons() {
+            const container = document.getElementById('welcome-icons-bg');
+            const icons = ['fa-whatsapp', 'fa-tiktok', 'fa-telegram-plane', 'fa-instagram', 'fa-facebook'];
+            for (let i = 0; i < 12; i++) {
+                const icon = document.createElement('i');
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                icon.className = `fab ${randomIcon} floating-icon`;
+                icon.style.left = `${Math.random() * 100}vw`;
+                icon.style.top = `${Math.random() * 100}vh`;
+                icon.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                icon.style.animationDelay = `-${Math.random() * 20}s`;
+                container.appendChild(icon);
+            }
+        }
+
+        function launchFirecracker() {
+            const welcome = document.getElementById('welcome-screen');
+            if (welcome.classList.contains('hidden-screen')) return;
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const colors = ['#00d2ff', '#3b82f6', '#ffffff', '#ff00ff', '#ffff00'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firecracker';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = color;
+                particle.style.boxShadow = `0 0 10px ${color}`;
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.animation = `explode ${Math.random() * 0.5 + 0.5}s ease-out forwards`;
+                welcome.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function initPage() {
+            setGreeting();
+            createStars();
+            createWelcomeIcons();
+            setInterval(launchFirecracker, 800);
+        }
+
+        function enterSite() {
+            document.getElementById('welcome-screen').classList.add('hidden-screen');
+            triggerBoost();
         }
     </script>
-
 </body>
 </html>
-
