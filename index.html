@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MidedBrown Data Plug | Official Portal</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Inter:wght@400;600;800&display=swap');
@@ -409,7 +411,7 @@
 
         function launchFirecracker() {
             const welcome = document.getElementById('welcome-screen');
-            if (welcome.classList.contains('hidden-screen')) return;
+            if (!welcome || welcome.classList.contains('hidden-screen')) return;
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * window.innerHeight;
             const colors = ['#00d2ff', '#3b82f6', '#ffffff', '#ff00ff', '#ffff00'];
